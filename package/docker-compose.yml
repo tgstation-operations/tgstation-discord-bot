@@ -1,0 +1,8 @@
+  orangebot:
+    restart: always
+    environment:
+      - TOKEN=${DISCORD_TOKEN}
+      - PREFIX=${BOT_PREFIX}
+    image: phasecorex/red-discordbot
+    volumes:
+      - ${BOT_STORE_PATH}:/data
