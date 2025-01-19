@@ -38,7 +38,14 @@ in
         The discord API key for the discord bot account
         ''
       }
-
+      bot_store = lib.mkOption{
+        type = lib.types.path;
+        default = "/persist";
+        description = ''
+        Location on disk where the bot stores any configuration settings and data
+        This will be mounted into the docker container
+        ''
+      }
       bot_prefix = lib.mkOption {
         type = lib.types.str;
         default = ".";
@@ -69,8 +76,9 @@ in
         ExecStart = "${pkgs.docker}/bin/docker compose -f ./package/docker-compose.yml up --build";
         WantedBy = [ "multi-user.target" ];
         Environment = [
-          "DISCORD_TOKEN=${cfg.discord_api_key}"
-          "BOT_PREFIX=${cfg.bot_prefix}"
+          "DISCORD_TOKEN=${cfg.discord_api_key}",
+          "BOT_PREFIX=${cfg.bot_prefix}",
+          "BOT_STORE_PATH"=${cfg.bot_store}
         ];
       };
     };
